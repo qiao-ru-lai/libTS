@@ -1,2 +1,0 @@
-# libTS
-h265/h264/AAC/h265_AAC/h264_AAC to TS

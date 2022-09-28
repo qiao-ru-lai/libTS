@@ -1,0 +1,65 @@
+ffmpeg -i test_264.ts -vcodec copy -acodec copy -bsf:a test_mp4.mp4
+
+
+ffmpeg -i 265_ts.h265 -vcodec copy -f mpegts test_ffmpeg_h265.ts
+
+ffmpeg -i 265_ts.h265 -vcodec hevc -y test_ffmpeg_h265.ts
+
+
+//提取mp4中aac
+ffmpeg -i input.mp4 -vn -codec copy output.aac
+
+//提取mp4中h264，但无法直接播放，需要转为annexb
+ffmpeg -i input.mp4 -vcodec copy -an output.h264
+
+//提取mp4中h265
+ffmpeg -i input.mp4 -vcodec copy -an output.h265
+
+ffmpeg -i input.mp4 -vcodec copy -f hevc output.h265
+
+//264转265
+ffmpeg -i test.h264 test.hevc 或
+ffmpeg -i test.h264 test.h265
+
+//mp4封装h264转换到h265
+ffmpeg -i input.mp4 -c:v libx265 output.mp4
+
+//提取mp4中h264,但没有时间戳
+ffmpeg -i input.mp4 -codec copy -bsf: h264_mp4toannexb -f h264 output.h264
+
+//合并h264和aac文件为MP4
+ffmpeg -i "track1.h264" -i "track2.aac" -vcodec copy -acodec copy -absf aac_adtstoasc "res.mp4"
+
+ffmpeg -i input.mp4 -c:v libx265 output.h265
+
+
+////////////////////
+ffmpeg -i 264_aac.mp4 -c:v libx265 265_aac.mp4
+
+ffmpeg -i 264_aac.mp4 -vn -codec copy 264_aac.aac
+
+ffmpeg -i 264_aac.mp4 -vcodec copy -an 264_aac.h264
+
+ffmpeg -i 264_aac.mp4 -codec copy -bsf: h264_mp4toannexb -f h264 264_aac.h264
+
+ffmpeg -i 265_aac.mp4 -vcodec copy -an 265_aac.h265
+
+ffmpeg -i 265_aac.mp4 -vn -codec copy 265_aac.aac
+
+ffmpeg -i 265_aac.mp4 -codec copy -bsf: h265_mp4toannexb -f h265 265_aac.h265
+
+ffmpeg -i 265_aac.mp4 -vcodec libx265 -an 265_aac.h265
+
+ffmpeg -i 264_aac.h264 265_aac.hevc
+
+
+ffmpeg -i "265_aac.h265" -i "265_aac.aac" -vcodec copy -acodec copy -absf aac_adtstoasc "265_aac_2.mp4"
+
+ffmpeg -i 265_aac.mp4 -vcodec copy -an 265_aac.hevc
+
+ffmpeg -i 265_aac.mp4 -vcodec copy -f hevc 265_aac.h265
+
+ffmpeg -i 265_aac_test.ts -vcodec copy -acodec copy -bsf:a 265_aac_test.mp4
+
+ffmpeg -i 264_aac.mp4 -c:v libx265 265_aac.hevc
+
